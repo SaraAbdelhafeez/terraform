@@ -20,11 +20,7 @@ pipeline {
       }
 
       stage('build the environment') {
-          when {
-              expression{
-                  params.terraform == true 
-              }
-          }
+          
           steps {
             withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
               sh "terraform apply --var-file ${params.namespace}.tfvars -auto-approve" 
