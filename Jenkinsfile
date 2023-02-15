@@ -1,11 +1,12 @@
 
 pipeline {
+
+  agent any
+  parameters {
+      booleanParam(name:'terraform', defaultValue: true, description:'this paramater help you to know project name')
+      choice(name: 'env-param', choices:['dev','prod'], description: 'the workspace' ) 
+  }
   withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
-    agent any
-    parameters {
-        booleanParam(name:'terraform', defaultValue: true, description:'this paramater help you to know project name')
-        choice(name: 'env-param', choices:['dev','prod'], description: 'the workspace' ) 
-    }
 
     stages {
         stage('initializing terraform') {
@@ -35,6 +36,6 @@ pipeline {
             }
         }    
     }
-
   }
+
 }
