@@ -13,7 +13,7 @@ pipeline {
           steps {
               echo "checking your code"
               echo "${params.env-param}"
-              withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+              withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
                 sh "terraform init --var-file ${params.env-param}.tfvars -auto-approve"
               }
           }
@@ -26,7 +26,7 @@ pipeline {
               }
           }
           steps {
-            withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+            withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
               sh "terraform apply --var-file ${params.env-param}.tfvars -auto-approve" 
             }
           }
