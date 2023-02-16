@@ -51,6 +51,27 @@ resource "aws_security_group_rule" "private_in_3000" {
 }
 
 
+ # security group for rds
+
+ resource "aws_security_group" "db_sg" {
+   name = "db_sg"
+   description = "security group for database"
+   vpc_id = var.vpc_id
+   tags = {
+     "Name" = "db_sg"
+   }
+ }
+
+ resource "aws_security_group_rule" "db_sg_rule" {
+  type              = "ingress"
+  description       = "allow traffic from only the app" 
+  from_port         = 3000
+  to_port           = 3000
+  protocol          = "tcp"
+  cidr_blocks       = [var.vpc_cidr_block]
+  security_group_id = aws_security_group.db_sg.id
+}
+
 
 
 

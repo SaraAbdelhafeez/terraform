@@ -10,6 +10,10 @@ variable "private_subnet_cidr" {
   type = string
 }
 
+variable "private_subnet2_cidr" {
+  type = string
+}
+
 variable "key_name" {
   type = string
 }

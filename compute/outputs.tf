@@ -9,3 +9,7 @@ output "application_ip" {
 output "name" {
   value = data.aws_ami.ubuntu.name
 }
+
+output "database_endpoint" {
+  value = aws_db_instance.default.address
+}

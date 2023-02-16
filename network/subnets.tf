@@ -13,3 +13,11 @@ resource "aws_subnet" "private_subnet" {
     "Name" = "sprints_private_subnet"
   }
 }
+
+resource "aws_subnet" "private_subnet2" {
+  vpc_id     = aws_vpc.sprints_vpc.id
+  cidr_block = var.private_subnet2_cidr
+  tags = {
+    "Name" = "sprints_private_subnet2"
+  }
+}
