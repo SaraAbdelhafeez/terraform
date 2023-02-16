@@ -13,17 +13,17 @@ pipeline {
           steps {
               echo "checking your code"
               echo "${params.namespace}"
-//               withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
-//                 sh "terraform init --var-file ${params.namespace}.tfvars "
-//               }
+              withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
+                sh "terraform init --var-file ${params.namespace}.tfvars "
+              }
           }
       }
 
-      stage('build the environment') {
+      stage('build the resouces') {
           
           steps {
             withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
-              sh "terraform destroy --var-file ${params.namespace}.tfvars -auto-approve" 
+              sh "terraform apply --var-file ${params.namespace}.tfvars -auto-approve" 
             }
           }
       }
@@ -33,7 +33,15 @@ pipeline {
               echo "your code is deployed right now"
               echo "this build number $BUILD_NUMBER"
           }
-      }    
+      }
+    
+    stage('destroying the resouces') {  
+          steps {
+              withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')])  {
+              sh "terraform destroy --var-file ${params.namespace}.tfvars -auto-approve" 
+            }
+          }
+      } 
   }
   
 
